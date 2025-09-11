@@ -1,0 +1,139 @@
+/* --- Global & Shell Styles --- */
+:root {
+    --primary-bg: #121212; --secondary-bg: #1E1E1E; --tertiary-bg: #2a2a2a;
+    --primary-text: #E0E0E0; --secondary-text: #a0a0a0; --accent-color: #03dac6;
+    --accent-glow: rgba(3, 218, 198, 0.4); --secondary-color: #bb86fc; --error-color: #cf6679;
+    --error-glow: rgba(207, 102, 121, 0.4);
+    --border-color: #3a3a3a; --font-main: 'Inter', sans-serif; --font-mono: 'Roboto Mono', monospace;
+    --shadow-depth-1: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    --shadow-depth-2: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+body { 
+    background-color: var(--primary-bg);
+    color: var(--primary-text);
+    font-family: var(--font-main);
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* --- Login Screen --- */
+#login-container { display: flex; flex-direction: column; padding: 2.5rem; background-color: var(--secondary-bg); border-radius: 12px; border: 1px solid var(--border-color); width: 100%; max-width: 400px; text-align: center; box-shadow: var(--shadow-depth-2); }
+#login-container h2 { margin-top: 0; margin-bottom: 1.5rem; font-weight: 700; color: var(--accent-color); }
+
+/* --- Common Elements & Buttons --- */
+input[type="email"], input[type="password"], input[type="text"], input[type="search"] { background-color: var(--tertiary-bg); color: var(--primary-text); border: 1px solid var(--border-color); padding: 0.8rem 1rem; border-radius: 8px; margin-bottom: 1rem; font-family: var(--font-main); font-size: 1rem; transition: box-shadow 0.2s, border-color 0.2s; }
+input:focus { outline: none; border-color: var(--accent-color); box-shadow: 0 0 0 4px var(--accent-glow); }
+
+.button-primary { background-color: var(--accent-color); color: #000; border: none; border-radius: 8px; padding: 0.9rem 1.5rem; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+.button-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 8px var(--accent-glow); }
+
+.button-secondary { background-color: transparent; border: 1px solid var(--border-color); color: var(--secondary-text); border-radius: 8px; padding: 0.9rem 1.5rem; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+.button-secondary:hover { border-color: var(--accent-color); color: var(--accent-color); background-color: var(--tertiary-bg); }
+
+.button-danger {
+    background-color: transparent;
+    border: 1px solid var(--error-color);
+    color: var(--error-color);
+    border-radius: 8px;
+    padding: 0.9rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.button-danger:hover {
+    background-color: var(--error-color);
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px var(--error-glow);
+}
+
+#login-error, #modal-error { color: var(--error-color); min-height: 20px; font-size: 0.9rem; }
+
+/* --- App Shell --- */
+#app-container { width: 100%; max-width: 1200px; height: 90vh; display: none; flex-direction: column; background-color: var(--secondary-bg); border-radius: 12px; box-shadow: 0 10px 20px rgba(0,0,0,0.19); overflow: hidden; }
+nav { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1.5rem; border-bottom: 1px solid var(--border-color); }
+main { flex-grow: 1; overflow-y: auto; padding: 1.5rem 2rem; }
+.view-button { background: none; border: none; color: var(--secondary-text); font-size: 1rem; padding: 0.5rem 1rem; cursor: pointer; border-radius: 6px; }
+.view-button.active { color: var(--accent-color); background-color: var(--tertiary-bg); }
+#logout-button { background: transparent; border: 1px solid var(--error-color); color: var(--error-color); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; transition: all 0.2s; }
+#logout-button:hover { background-color: var(--error-color); color: #fff; }
+
+/* --- Admin Card Styles --- */
+.simple-card { background-color: var(--tertiary-bg); border-radius: 8px; padding: 1rem 1.5rem; box-shadow: var(--shadow-depth-1); border-left: 4px solid var(--border-color); display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1rem; }
+.simple-card .details { flex-grow: 1; }
+.simple-card .name { font-weight: 700; font-size: 1.1rem; margin: 0; color: var(--primary-text); }
+.simple-card .uid { font-family: var(--font-mono); color: var(--secondary-text); font-size: 0.9rem; margin: 0.25rem 0 0 0; }
+.status-badge { padding: 0.3rem 0.8rem; border-radius: 12px; font-size: 0.8rem; font-weight: 700; color: #000; flex-shrink: 0; }
+.switch { position: relative; display: inline-block; width: 50px; height: 28px; }
+.switch input { display: none; }
+.slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #555; border-radius: 28px; transition: .4s; }
+.slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 4px; bottom: 4px; background-color: white; border-radius: 50%; transition: .4s; }
+input:checked + .slider { background-color: var(--secondary-color); }
+input:checked + .slider:before { transform: translateX(22px); }
+.delete-button { background: none; border: none; color: var(--secondary-text); cursor: pointer; padding: 0.5rem; border-radius: 50%; }
+.delete-button:hover { background-color: var(--error-color); color: #fff; }
+
+/* --- **INTERACTIVE** Grouped Log View Styles --- */
+.log-group { margin-bottom: 2rem; }
+.log-group-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem; margin-bottom: 1rem; }
+.log-group-header h3 { margin: 0; font-size: 1.4rem; color: var(--primary-text); }
+.log-count-badge { background-color: var(--accent-color); color: #000; padding: 0.4rem 0.8rem; font-size: 0.9rem; font-weight: 700; border-radius: 12px; }
+
+.log-entry { display: grid; grid-template-columns: 200px 1fr; align-items: start; padding: 1rem; background-color: var(--tertiary-bg); border-radius: 8px; margin-bottom: 1rem; box-shadow: var(--shadow-depth-1); cursor: pointer; transition: background-color 0.2s; }
+.log-entry:hover { background-color: var(--primary-bg); }
+.log-entry .name { position: relative; font-weight: 700; font-size: 1.1rem; color: var(--primary-text); margin-top: 5px; }
+
+/* Indicator for expandable rows */
+.log-entry .name::after { content: '▸'; font-size: 1em; color: var(--secondary-text); transition: transform 0.2s; display: inline-block; position: absolute; right: 0; }
+.log-entry.expanded .name::after { transform: rotate(90deg); }
+
+.timestamp-list { display: none; /* Hidden by default */ flex-wrap: wrap; gap: 0.75rem; align-items: center; padding-left: 1rem; border-left: 1px solid var(--border-color); margin-top: 1rem; }
+.log-entry.expanded .timestamp-list { display: flex; /* Shown when expanded */ }
+
+.timestamp-item { background-color: var(--secondary-bg); padding: 0.4rem 0.8rem; border-radius: 6px; font-family: var(--font-mono); font-size: 0.95rem; }
+
+/* --- Modal Styles --- */
+#modal-backdrop, #delete-modal-backdrop {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: none; /* Hidden by default */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+#add-admin-modal, #delete-confirm-modal {
+    background-color: var(--secondary-bg);
+    padding: 2rem;
+    border-radius: 12px;
+    border-top: 4px solid var(--accent-color);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 450px;
+}
+
+#add-admin-modal h2, #delete-confirm-modal h2 {
+    margin-top: 0;
+    text-align: center;
+}
+
+#add-admin-modal p, #delete-confirm-modal p {
+    margin-bottom: 1.5rem;
+    color: var(--secondary-text);
+    text-align: center;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}

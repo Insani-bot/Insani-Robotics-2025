@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="app-title">Panel de Administración</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Roboto+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Login View -->
+    <div id="login-container">
+        <h2 id="login-title">Acceso de Administrador</h2>
+        <input type="email" id="email" placeholder="Correo electrónico">
+        <input type="password" id="password" placeholder="Contraseña">
+        <p id="login-error"></p>
+        <button id="login-button" class="button-primary">Iniciar Sesión</button>
+    </div>
+
+    <!-- Main App View -->
+    <div id="app-container">
+        <nav>
+            <div>
+                <button id="admin-view-button" class="view-button active">Administradores</button>
+                <button id="logs-view-button" class="view-button">Registros</button>
+            </div>
+            <button id="logout-button">Cerrar Sesión</button>
+        </nav>
+        <main>
+            <!-- Admin Management View -->
+            <div id="admin-view">
+                <div class="toolbar">
+                    <input type="search" id="search-input" placeholder="Buscar por nombre o UID...">
+                    <button id="add-admin-button" class="button-primary">Añadir Nuevo</button>
+                </div>
+                <div id="admin-list"></div>
+            </div>
+
+            <!-- Access Logs View -->
+            <div id="logs-view" style="display: none;">
+                <div id="access-logs-list"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Admin Modal -->
+    <div id="modal-backdrop" style="display: none;">
+        <div id="add-admin-modal">
+            <h2 id="modal-title">Añadir nueva Llave</h2>
+            <p id="modal-description">Introduce el nombre y el UID de la llave que quieres registrar.</p>
+            <input type="text" id="new-admin-name" placeholder="Nombre del propietario">
+            <input type="text" id="new-admin-uid" placeholder="UID de la Llave">
+            <p id="modal-error"></p>
+            <div class="modal-actions">
+                <button id="cancel-add-admin" class="button-secondary">Cancelar</button>
+                <button id="save-admin-button" class="button-primary">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-modal-backdrop" style="display: none;">
+        <div id="delete-confirm-modal">
+            <h2 id="delete-modal-title"></h2>
+            <p id="delete-modal-text"></p>
+            <div class="modal-actions">
+                <button id="cancel-delete-button" class="button-secondary">Cancelar</button>
+                <button id="confirm-delete-button" class="button-danger">Eliminar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="main.js"></script>
+
+</body>
+</html>
