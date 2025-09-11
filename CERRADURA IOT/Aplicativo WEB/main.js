@@ -54,15 +54,15 @@ const applyText = (lang) => {
 
 // --- Firebase Configuration ---
 const firebaseConfig = {
-    apiKey: "AIzaSyBRjLvZXhYDIDReDrYwINRXNKiUJuECYyA",
-    authDomain: "registro-inlock.firebaseapp.com",
-    databaseURL: "https://registro-inlock-default-rtdb.firebaseio.com",
-    projectId: "registro-inlock",
-    storageBucket: "registro-inlock.firebasestorage.app",
-    messagingSenderId: "509105784063",
-    appId: "1:509105784063:web:e84fbcfb0fc49de4a978ca",
-    measurementId: "G-Q8P3SN8DF8"
+    apiKey: "AIzaSyALRIWXZtkE-8uy99JqGa5ljLnALUDGenQ",
+    authDomain: "firekey-data.firebaseapp.com",
+    projectId: "firekey-data",
+    storageBucket: "firekey-data.firebasestorage.app",
+    messagingSenderId: "764181524121",
+    appId: "1:764181524121:web:093aa4bf4f7b28d9c39208",
+    measurementId: "G-P3K5X25ZX9"
 };
+
 let app; try { app = firebase.app(); } catch (e) { app = firebase.initializeApp(firebaseConfig); }
 const auth = firebase.auth();
 const db = firebase.firestore();
