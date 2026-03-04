@@ -442,7 +442,6 @@ void setup() {
   request->send(200, "text/plain", "OK");
   });
 
-
   server.begin();
 }
 
