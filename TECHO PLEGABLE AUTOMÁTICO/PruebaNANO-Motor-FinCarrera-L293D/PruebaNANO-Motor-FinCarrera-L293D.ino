@@ -8,7 +8,7 @@ const int finPlegado = 5;     // D5
 const int finDesplegado = 6;  // D6
 
 // -------- CONFIG --------
-const int velocidadMotor = 220;
+const int velocidadMotor = 240;
 
 // -------- ESTADOS --------
 enum Estado {

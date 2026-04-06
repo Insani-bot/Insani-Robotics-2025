@@ -13,8 +13,8 @@ const int EN = 3;
 const int IN1 = 9;
 const int IN2 = 10;
 
-const int finPlegado = 5;
-const int finDesplegado = 6;
+const int finDesplegado = 5;
+const int finPlegado = 6;
 
 // -------- SENSOR --------
 const int pinLluvia = A3;
@@ -22,13 +22,13 @@ const int pinLluvia = A3;
 // -------- CONFIG --------
 const int velocidadMotor = 220;
 
-// -------- CALIBRACION (AJUSTAR EN CAMPO) --------
+// -------- CALIBRACION REAL --------
 int valorSeco = 850;
-int valorMojado = 300;
+int valorMojado = 200;
 
 // -------- HISTÉRESIS --------
-const int UMBRAL_LLUVIA = 60;   // cerrar
-const int UMBRAL_SECO   = 30;   // abrir
+const int UMBRAL_LLUVIA = 60;
+const int UMBRAL_SECO   = 30;
 
 // -------- ESTADOS --------
 enum Estado { 
@@ -49,20 +49,21 @@ const unsigned long intervalo = 500;
 
 // -------- VARIABLES --------
 float lluviaPct = 0;
-int lluviaFiltrada = 0;
 String clima = "NUBLADO";
 
 // -------- FUNCIONES --------
 
 void moverDesplegar() {
-  digitalWrite(IN1, HIGH);
-  digitalWrite(IN2, LOW);
+  // CUBRIR
+  digitalWrite(IN1, LOW);
+  digitalWrite(IN2, HIGH);
   analogWrite(EN, velocidadMotor);
 }
 
 void moverPlegar() {
-  digitalWrite(IN1, LOW);
-  digitalWrite(IN2, HIGH);
+  // DESCUBRIR
+  digitalWrite(IN1, HIGH);
+  digitalWrite(IN2, LOW);
   analogWrite(EN, velocidadMotor);
 }
 
@@ -72,7 +73,6 @@ void detenerMotor() {
   analogWrite(EN, 0);
 }
 
-// Promedio simple
 int leerPromedio(int pin) {
   long suma = 0;
   for (int i = 0; i < 8; i++) {
@@ -100,13 +100,19 @@ void setup() {
   display.clearDisplay();
   display.display();
 
-  // Estado inicial
-  if (digitalRead(finPlegado) == LOW)
+  // -------- ESTADO INICIAL REAL --------
+  if (digitalRead(finPlegado) == LOW) {
     estadoActual = PLEGADO;
-  else if (digitalRead(finDesplegado) == LOW)
+  }
+  else if (digitalRead(finDesplegado) == LOW) {
     estadoActual = DESPLEGADO;
-  else
-    estadoActual = PLEGADO;
+  }
+  else {
+    // seguridad → plegar
+    moverPlegar();
+    tiempoMovimiento = millis();
+    estadoActual = MOVIENDO_A_PLEGAR;
+  }
 }
 
 // -------- LOOP --------
@@ -120,22 +126,19 @@ void loop() {
 
     tiempoLectura = ahora;
 
-    int lluviaRaw = leerPromedio(pinLluvia);
+    int lluviaRaw = 1023 - leerPromedio(pinLluvia);
 
-    // Conversión calibrada (invertida correctamente)
-    lluviaFiltrada = map(lluviaRaw, valorSeco, valorMojado, 0, 100);
-    lluviaFiltrada = constrain(lluviaFiltrada, 0, 100);
+    // 🔥 CORRECCIÓN CLAVE (igual ESP32)
+    lluviaPct = map(lluviaRaw, valorMojado, valorSeco, 0, 100);
+    lluviaPct = constrain(lluviaPct, 0, 100);
 
-    lluviaPct = lluviaFiltrada;
-
-    // DEBUG
     Serial.print("RAW: ");
     Serial.print(lluviaRaw);
-    Serial.print("  %: ");
+    Serial.print(" %: ");
     Serial.println(lluviaPct);
   }
 
-  // -------- LOGICA CON HISTÉRESIS --------
+  // -------- HISTÉRESIS --------
   static bool estadoLluvia = false;
 
   if (!estadoLluvia && lluviaPct > UMBRAL_LLUVIA) {
@@ -154,7 +157,6 @@ void loop() {
   else clima = "NUBLADO";
 
   // -------- MAQUINA DE ESTADOS --------
-
   switch (estadoActual) {
 
     case PLEGADO:
@@ -163,7 +165,7 @@ void loop() {
         tiempoMovimiento = ahora;
         estadoActual = MOVIENDO_A_DESPLEGAR;
       }
-    break;
+      break;
 
     case DESPLEGADO:
       if (descubrir) {
@@ -171,7 +173,7 @@ void loop() {
         tiempoMovimiento = ahora;
         estadoActual = MOVIENDO_A_PLEGAR;
       }
-    break;
+      break;
 
     case MOVIENDO_A_DESPLEGAR:
       if (digitalRead(finDesplegado) == LOW || 
@@ -179,7 +181,7 @@ void loop() {
         detenerMotor();
         estadoActual = DESPLEGADO;
       }
-    break;
+      break;
 
     case MOVIENDO_A_PLEGAR:
       if (digitalRead(finPlegado) == LOW || 
@@ -187,28 +189,24 @@ void loop() {
         detenerMotor();
         estadoActual = PLEGADO;
       }
-    break;
+      break;
   }
 
   // -------- OLED --------
-
   display.clearDisplay();
   display.setTextColor(WHITE);
 
   display.setTextSize(1);
-  display.setCursor(0, 2);
+  display.setCursor(0, 0);
   display.print("LLUVIA: ");
-  display.print("// ESTADO: ");
+  display.print(lluviaPct, 0);
+  display.print("%");
 
   display.setCursor(0, 18);
-  display.print("   ");
-  display.print(lluviaPct, 0);
-  display.print("%     ");
+  display.print("ESTADO: ");
 
-  //display.print("ESTADO: ");
-
-  if (estadoActual == PLEGADO) display.print("ABIERTO");
-  else if (estadoActual == DESPLEGADO) display.print("CERRADO");
+  if (estadoActual == PLEGADO) display.print("DESCUBIERTO");
+  else if (estadoActual == DESPLEGADO) display.print("CUBIERTO");
   else display.print("MOVIENDO");
 
   display.setTextSize(2);
