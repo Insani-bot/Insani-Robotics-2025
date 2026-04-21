@@ -22,7 +22,7 @@ const int pinLluvia = A3;
 // -------- CONFIG --------
 const int velocidadMotor = 220;
 
-// -------- CALIBRACION REAL --------
+// -------- CALIBRACION REAL 1023--------
 int valorSeco = 850;
 int valorMojado = 200;
 

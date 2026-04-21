@@ -1,11 +1,11 @@
 // -------- MOTOR --------
 const int EN = 3;     // D3 PWM
-const int IN1 = 9;    //IN1 D9
-const int IN2 = 10;   //IN2 D10
+const int IN1 = 5;    //IN1 D9
+const int IN2 = 6;   //IN2 D10
 
 // -------- FINALES --------
-const int finPlegado = 5;     // D5
-const int finDesplegado = 6;  // D6
+const int finPlegado = 2;     // D5
+const int finDesplegado = 4;  // D6
 
 // -------- CONFIG --------
 const int velocidadMotor = 240;
