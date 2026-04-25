@@ -1,4 +1,4 @@
-// -------- LIBRERIAS --------
+// -------- HW-038--------
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
@@ -10,25 +10,25 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 
 // -------- MOTOR --------
 const int EN = 3;
-const int IN1 = 9;
-const int IN2 = 10;
+const int IN1 = 8;
+const int IN2 = 9;
 
-const int finDesplegado = 5;
-const int finPlegado = 6;
+const int finDesplegado = 6;
+const int finPlegado = 5;
 
 // -------- SENSOR --------
-const int pinLluvia = A3;
+const int pinLluvia = A1;
 
 // -------- CONFIG --------
-const int velocidadMotor = 220;
+const int velocidadMotor = 240;
 
 // -------- CALIBRACION REAL 1023--------
-int valorSeco = 850;
-int valorMojado = 200;
+int valorSeco = 580;
+int valorMojado = 20;
 
 // -------- HISTÉRESIS --------
 const int UMBRAL_LLUVIA = 60;
-const int UMBRAL_SECO   = 30;
+const int UMBRAL_SECO   = 40;
 
 // -------- ESTADOS --------
 enum Estado { 
@@ -75,10 +75,10 @@ void detenerMotor() {
 
 int leerPromedio(int pin) {
   long suma = 0;
-  for (int i = 0; i < 8; i++) {
+  for (int i = 0; i < 5; i++) {
     suma += analogRead(pin);
   }
-  return suma / 8;
+  return suma / 5;
 }
 
 // -------- SETUP --------
@@ -126,9 +126,8 @@ void loop() {
 
     tiempoLectura = ahora;
 
-    int lluviaRaw = 1023 - leerPromedio(pinLluvia);
+    int lluviaRaw = leerPromedio(pinLluvia);
 
-    // 🔥 CORRECCIÓN CLAVE (igual ESP32)
     lluviaPct = map(lluviaRaw, valorMojado, valorSeco, 0, 100);
     lluviaPct = constrain(lluviaPct, 0, 100);
 

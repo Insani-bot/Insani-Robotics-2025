@@ -1,14 +1,14 @@
 // -------- MOTOR --------
 const int EN = 3;     // D3 PWM
-const int IN1 = 5;    //IN1 D9
-const int IN2 = 6;   //IN2 D10
+const int IN1 = 8;    //IN1 D8
+const int IN2 = 9;   //IN2 D9
 
 // -------- FINALES --------
-const int finPlegado = 2;     // D5
-const int finDesplegado = 4;  // D6
+const int finPlegado = 5;     // D5
+const int finDesplegado = 6;  // D6
 
 // -------- CONFIG --------
-const int velocidadMotor = 240;
+const int velocidadMotor = 220;
 
 // -------- ESTADOS --------
 enum Estado {
