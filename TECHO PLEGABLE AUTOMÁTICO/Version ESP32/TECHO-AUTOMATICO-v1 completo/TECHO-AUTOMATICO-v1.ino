@@ -29,7 +29,7 @@ const int pinLluvia = 35;
 const int canalPWM = 0;
 const int frecuencia = 5000;
 const int resolucion = 8;
-const int velocidadMotor = 220;
+const int velocidadMotor = 240;
 
 // -------- ESTADOS --------
 enum Estado { PLEGADO, DESPLEGADO, MOVIENDO_A_DESPLEGAR, MOVIENDO_A_PLEGAR };
